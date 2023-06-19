@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+/*protocol ExploreTableViewCellProtocol {
+    func exploreTableViewCellDidTap(_ cell: ExploreTableViewCell, viewModel: FilmViewModelProtocol)
+}
+*/
 class ExploreTableViewCell: UITableViewCell {
     //MARK: -- GUI Variables
     private lazy var filmImage: UIImageView = {
@@ -44,6 +48,9 @@ class ExploreTableViewCell: UITableViewCell {
         return label
     }()
     
+    //MARK: -- Properties
+   // var viewModel: ExploreViewModelProtocol?
+    
     //MARK: -- Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -58,7 +65,7 @@ class ExploreTableViewCell: UITableViewCell {
     //MARK: -- Methods
     func setup(movie: MovieCellViewModel, model: String) {
         if movie.title != nil {
-            titleLabel.text = movie.title
+            titleLabel.text = movie.title ?? movie.original_name
         } else {
             titleLabel.text = "No name"
         }

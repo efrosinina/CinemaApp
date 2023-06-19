@@ -12,6 +12,8 @@ final class APIManager {
     //MARK: -- Properties
     private static let apiKey = "879df0290516fda72efd515b77289405"
     private static let baseUrl = "https://api.themoviedb.org/3"
+    private static let youtubeApiKey = "AIzaSyC5FKMLOt7PpO_-Fi5722P-6WfeWVjkTyM"
+    private static let youtubeBaseUrl = "https://youtube.googleapis.com/youtube/v3/search?"
     
     //MARK: -- Function
     static func fetchMovies(/*from endpoint: TitleSections, */completion: @escaping (Result<[Movie], Error>) -> ()) {
@@ -24,7 +26,7 @@ final class APIManager {
                            error: error,
                            completion: completion)
         }
-         session.resume()
+        session.resume()
     }
     
     
@@ -45,6 +47,27 @@ final class APIManager {
         } else {
             completion(.failure(NetworkingError.unknown))
         }
+    }
+    
+    static func getYoutubeTrailer(with query: String, completion: @escaping (Result<VideoResponseModel, Error>) -> ()) {
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        let stringUrl = "\(youtubeBaseUrl)q=\(query)&key=\(youtubeApiKey)"
+        
+        guard let url = URL(string: stringUrl) else { return }
+        
+        let session = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let data = data {
+                do {
+                    let results = try JSONDecoder().decode(YouTubeSearchResponse.self, from: data)
+                    completion(.success(results.items[0]))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+        }
+        session.resume()
     }
 }
 

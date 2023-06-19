@@ -1,5 +1,5 @@
 //
-//  MoviesViewModel.swift
+//  ExploreViewModel.swift
 //  CinemaApp
 //
 //  Created by Елизавета Ефросинина on 18/06/2023.
@@ -7,23 +7,25 @@
 
 import Foundation
 
-protocol MoviesViewModelProtocol {
+protocol ExploreViewModelProtocol {
     var reloadData: (() -> Void)? { get set }
     var numberOfCells: Int { get }
     var showError: ((String) -> Void)? { get set }
     var reloadCell: ((Int) -> Void)? { get set }
+    var movies: [MovieCellViewModel] { get set }
     
     func getMovie(for row: Int) -> MovieCellViewModel
 }
 
-final class MoviesViewModel: MoviesViewModelProtocol {
+final class ExploreViewModel: ExploreViewModelProtocol {
+
     var reloadCell: ((Int) -> Void)?
     
     var showError: ((String) -> Void)?
     var reloadData: (() -> Void)?
     
     //MARK: -- Properties
-    private var movies: [MovieCellViewModel] = [] {
+    var movies: [MovieCellViewModel] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.reloadData?()
@@ -31,15 +33,16 @@ final class MoviesViewModel: MoviesViewModelProtocol {
         }
     }
     
-    private var video: VideoResponseModel?
-    
     var numberOfCells: Int {
         return movies.count
     }
     
+    var video: VideoResponseModel?
+    
     //MARK: -- Initialization
     init() {
         loadData()
+        loadYouTubeVideo()
     }
     
     //MARK: -- Methods
@@ -62,6 +65,17 @@ final class MoviesViewModel: MoviesViewModelProtocol {
             }
         }
     }
+
+    func loadYouTubeVideo() {
+        APIManager.getYoutubeTrailer(with: "harry potter trailer") { result in
+            switch result {
+            case .success(let video):
+                print(video.id)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
     
     private func convertToCellViewModel(_ movies: [Movie]) -> [MovieCellViewModel] {
        return movies.map { MovieCellViewModel(movie: $0) }
@@ -81,5 +95,3 @@ final class MoviesViewModel: MoviesViewModelProtocol {
         ]
     }
 }
-
-

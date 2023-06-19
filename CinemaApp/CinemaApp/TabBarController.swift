@@ -22,7 +22,7 @@ final class TabBarController: UITabBarController {
             setupNavigationController(rootViewController: HomeViewController(viewModel: MoviesViewModel()),
                                       title: "Home",
                                       image: UIImage(systemName: "house") ?? UIImage.add),
-            setupNavigationController(rootViewController: ExploreViewController(viewModel: MoviesViewModel()),
+            setupNavigationController(rootViewController: ExploreViewController(viewModel: ExploreViewModel()),
                                       title: "Explore",
                                       image: UIImage(systemName: "magnifyingglass") ?? UIImage.add),
             setupNavigationController(rootViewController: FavoriteViewController(),

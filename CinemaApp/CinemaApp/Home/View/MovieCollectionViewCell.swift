@@ -50,7 +50,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     //MARK: -- Methods
     func setup(movie: MovieCellViewModel, model: String) {
         if movie.title != nil {
-            titleLabel.text = movie.title
+            titleLabel.text = movie.title ?? movie.original_name
         } else {
             titleLabel.text = "No name"
         }

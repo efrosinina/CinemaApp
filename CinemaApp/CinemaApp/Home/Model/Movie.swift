@@ -16,6 +16,7 @@ struct Movie: Codable {
     let overview: String?
     let vote_count: Int
     let release_date: String?
-    var imageData: Data?
+    let original_name: String?
+    let  youtubeView: VideoResponseModel?
 }
 

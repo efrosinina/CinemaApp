@@ -11,13 +11,13 @@ class ExploreViewController: UIViewController {
     //MARK: -- GUI Variables
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-       // searchBar.delegate = self
+        searchBar.delegate = self
         
         return searchBar
     }()
     
     private lazy var tableView: UITableView = {
-        let view = UITableView()
+        let view = UITableView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - searchBar.frame.height))
         view.register(ExploreTableViewCell.self, forCellReuseIdentifier: "ExploreTableViewCell")
         view.dataSource = self
         view.delegate = self
@@ -31,12 +31,12 @@ class ExploreViewController: UIViewController {
         
         setupUI()
     }
-
+    
     //MARK: -- Properties
-    private var viewModel: MoviesViewModelProtocol
+    private var viewModel: ExploreViewModelProtocol
     
     //MARK: -- Initializations
-    init(viewModel: MoviesViewModelProtocol) {
+    init(viewModel: ExploreViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.setupViewModel()
@@ -49,15 +49,22 @@ class ExploreViewController: UIViewController {
     
     //MARK: -- Private Methods
     private func setupUI() {
-        view.addSubview(tableView)
+        view.addSubviews([searchBar, tableView])
         view.backgroundColor = .white
-        tableView.frame = view.bounds
         
         setupConstraints()
     }
     
     private func setupConstraints() {
+        searchBar.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
         
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(searchBar.snp.bottom)
+            make.leading.trailing.equalToSuperview().inset(5)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     private func setupViewModel() {
@@ -88,8 +95,8 @@ extension ExploreViewController: UITableViewDataSource {
         
         let movie = viewModel.getMovie(for: indexPath.row)
         guard let image = viewModel.getMovie(for: indexPath.row).poster_path else { return UITableViewCell() }
-        cell.setup(movie: movie, model: image)
         
+        cell.setup(movie: movie, model: image)
         return cell
     }
 }
@@ -98,5 +105,16 @@ extension ExploreViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         let movie = viewModel.getMovie(for: indexPath.row)
+            //guard let titleName = movie.title else { return }
+        navigationController?.pushViewController(FilmViewController(viewModel: FilmViewModel(movie: movie)), animated: true)
+    }
 }
 
+extension ExploreViewController: UISearchBarDelegate {
+    //func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    //guard let text = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+    //        viewModel
+}
