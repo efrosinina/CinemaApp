@@ -28,7 +28,7 @@ class ExploreTableViewCell: UITableViewCell {
     }()
     
     private lazy var lineView: UIView = {
-      let view = UIView()
+        let view = UIView()
         view.backgroundColor = .systemBackground
         
         return view
@@ -58,7 +58,7 @@ class ExploreTableViewCell: UITableViewCell {
     //MARK: -- Methods
     func setup(movie: MovieCellViewModel, model: String) {
         if movie.title != nil {
-            titleLabel.text = movie.title
+            titleLabel.text = movie.title ?? movie.original_name
         } else {
             titleLabel.text = "No name"
         }
@@ -85,7 +85,7 @@ class ExploreTableViewCell: UITableViewCell {
             make.width.equalTo(80)
             make.leading.equalToSuperview()
             make.top.equalToSuperview()
-           make.bottom.equalTo(lineView.snp.top)
+            make.bottom.equalTo(lineView.snp.top)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -102,4 +102,3 @@ class ExploreTableViewCell: UITableViewCell {
         }
     }
 }
-

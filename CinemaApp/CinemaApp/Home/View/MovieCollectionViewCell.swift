@@ -8,6 +8,19 @@
 import UIKit
 import SnapKit
 import SDWebImage
+//MARK: -- Enum
+enum State {
+    case select, unselect
+    
+    var image: UIImage {
+        switch self {
+        case .select:
+            return UIImage(systemName: "heart.fill") ?? UIImage.add
+        case .unselect:
+            return UIImage(systemName: "heart") ?? UIImage.add
+        }
+    }
+}
 
 class MovieCollectionViewCell: UICollectionViewCell {
     //MARK: -- GUI Variables
@@ -16,14 +29,22 @@ class MovieCollectionViewCell: UICollectionViewCell {
         image.contentMode = .scaleAspectFill
         image.image = UIImage(named: "movieImage")
         image.layer.masksToBounds = true
-
+        
         return image
     }()
     
-  private lazy var titleLabel: UILabel = {
+    private lazy var favoriteImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = State.unselect.image
+        view.tintColor = .red
+        
+        return view
+    }()
+    
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-      label.textColor = .systemGray6.withAlphaComponent(1)
+        label.textColor = .systemGray6.withAlphaComponent(1)
         label.font = .boldSystemFont(ofSize: 16)
         label.text = "Venom 2 film watching"
         
@@ -41,27 +62,23 @@ class MovieCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-            super.layoutSubviews()
-            
-           //addGradient()
-        }
-    
     //MARK: -- Methods
-    func setup(movie: MovieCellViewModel, model: String) {
+    func setup(movie: MovieCellViewModel, model: String, selected: Bool) {
         if movie.title != nil {
-            titleLabel.text = movie.title
+            titleLabel.text = movie.title ?? movie.original_name
         } else {
             titleLabel.text = "No name"
         }
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else { return }
         
         imageView.sd_setImage(with: url)
+        
+        favoriteImageView.image = selected ? State.select.image : State.unselect.image
     }
     
     //MARK: -- Private Methods
     private func setupUI() {
-        addSubviews([imageView, titleLabel])
+        addSubviews([imageView, titleLabel, favoriteImageView])
         
         setupConstraints()
     }
@@ -73,6 +90,9 @@ class MovieCollectionViewCell: UICollectionViewCell {
         titleLabel.snp.makeConstraints { make in
             make.trailing.leading.bottom.equalToSuperview()
         }
+        
+        favoriteImageView.snp.makeConstraints { make in
+            make.top.trailing.equalToSuperview()
+        }
     }
 }
-

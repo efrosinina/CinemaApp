@@ -1,5 +1,5 @@
 //
-//  MoviesViewModel.swift
+//  ExploreViewModel.swift
 //  CinemaApp
 //
 //  Created by Елизавета Ефросинина on 18/06/2023.
@@ -7,27 +7,22 @@
 
 import Foundation
 
-protocol MoviesViewModelProtocol {
+protocol ExploreViewModelProtocol {
     var reloadData: (() -> Void)? { get set }
     var numberOfCells: Int { get }
     var showError: ((String) -> Void)? { get set }
     var reloadCell: ((Int) -> Void)? { get set }
-    var selectedMovies: [MovieCellViewModel] { get set }
     
     func getMovie(for row: Int) -> MovieCellViewModel
 }
 
-final class MoviesViewModel: MoviesViewModelProtocol {
-    //MARK: -- Properties
-    var selectedMovies: [MovieCellViewModel] = [] {
-        didSet {
-            saveSelectedMovies()
-        }
-    }
+final class ExploreViewModel: ExploreViewModelProtocol {
+    //MARK: -- Closures
     var reloadCell: ((Int) -> Void)?
     var showError: ((String) -> Void)?
     var reloadData: (() -> Void)?
     
+    //MARK: -- Properties
     private var movies: [MovieCellViewModel] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -35,11 +30,10 @@ final class MoviesViewModel: MoviesViewModelProtocol {
             }
         }
     }
-    
-    private var video: VideoResponseModel?
     var numberOfCells: Int {
         return movies.count
     }
+    var video: VideoResponseModel?
     
     //MARK: -- Initialization
     init() {
@@ -53,15 +47,8 @@ final class MoviesViewModel: MoviesViewModelProtocol {
     }
     
     //MARK: -- Private Methods
-    private func saveSelectedMovies() {
-        guard let data = try? JSONEncoder().encode(selectedMovies) else {
-            return
-        }
-        UserDefaults.standard.setValue(data, forKey: "movies")
-    }
-    
     private func loadData() {
-        APIManager.fetchMovies() { [weak self] result in
+        APIManager.fetchMovies { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let movies):
