@@ -70,7 +70,6 @@ class HomeViewController: UIViewController {
         }
         
         viewModel.showError = { error in
-            //TODO: show alert
             print(error)
         }
     }
