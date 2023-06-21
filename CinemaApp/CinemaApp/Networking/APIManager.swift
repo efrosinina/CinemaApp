@@ -15,8 +15,8 @@ final class APIManager {
     private static let youtubeBaseUrl = "https://youtube.googleapis.com/youtube/v3/search?"
     
     //MARK: -- Function
-    static func fetchMovies(/*from endpoint: TitleSections, */completion: @escaping (Result<[Movie], Error>) -> ()) {
-        let stringUrl = "\(baseUrl)" + "/trending/all/day"/*+ "/movie/day"*//* "\(endpoint.rawValue)"*/+ "?api_key=\(apiKey)"
+    static func fetchMovies(completion: @escaping (Result<[Movie], Error>) -> ()) {
+        let stringUrl = "\(baseUrl)" + "/trending/all/day" + "?api_key=\(apiKey)"
         
         guard let url = URL(string: stringUrl) else { return }
         
