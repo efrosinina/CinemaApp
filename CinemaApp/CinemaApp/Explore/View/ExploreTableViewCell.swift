@@ -8,10 +8,6 @@
 import UIKit
 import SnapKit
 
-/*protocol ExploreTableViewCellProtocol {
-    func exploreTableViewCellDidTap(_ cell: ExploreTableViewCell, viewModel: FilmViewModelProtocol)
-}
-*/
 class ExploreTableViewCell: UITableViewCell {
     //MARK: -- GUI Variables
     private lazy var filmImage: UIImageView = {
@@ -32,7 +28,7 @@ class ExploreTableViewCell: UITableViewCell {
     }()
     
     private lazy var lineView: UIView = {
-      let view = UIView()
+        let view = UIView()
         view.backgroundColor = .systemBackground
         
         return view
@@ -47,9 +43,6 @@ class ExploreTableViewCell: UITableViewCell {
         
         return label
     }()
-    
-    //MARK: -- Properties
-   // var viewModel: ExploreViewModelProtocol?
     
     //MARK: -- Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -92,7 +85,7 @@ class ExploreTableViewCell: UITableViewCell {
             make.width.equalTo(80)
             make.leading.equalToSuperview()
             make.top.equalToSuperview()
-           make.bottom.equalTo(lineView.snp.top)
+            make.bottom.equalTo(lineView.snp.top)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -109,4 +102,3 @@ class ExploreTableViewCell: UITableViewCell {
         }
     }
 }
-

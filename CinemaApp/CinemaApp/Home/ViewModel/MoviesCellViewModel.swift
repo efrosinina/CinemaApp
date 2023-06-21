@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct MovieCellViewModel {
+struct MovieCellViewModel: Codable {
+    //MARK: -- Properties
     let id: Int?
     let title: String?
     let original_name: String?
@@ -16,8 +17,8 @@ struct MovieCellViewModel {
     let vote_average: Double?
     let vote_count: Int
     var release_date: String?
-    let youtubeView: VideoResponseModel?
     
+    //MARK: -- Initialization
     init(movie: Movie) {
         overview = movie.overview
         vote_average = movie.vote_average
@@ -27,7 +28,6 @@ struct MovieCellViewModel {
         release_date = movie.release_date
         id = movie.id
         original_name = movie.original_name
-        youtubeView = movie.youtubeView
         if let formatDate = formatDate(dateString: release_date ?? "") {
             self.release_date = formatDate
         }
@@ -43,4 +43,3 @@ struct MovieCellViewModel {
         return dateFormatter.string(from: date)
     }
 }
-

@@ -8,7 +8,6 @@
 import Foundation
 
 final class APIManager {
-    //MARK: -- API for Movie's Topic
     //MARK: -- Properties
     private static let apiKey = "879df0290516fda72efd515b77289405"
     private static let baseUrl = "https://api.themoviedb.org/3"
@@ -28,8 +27,6 @@ final class APIManager {
         }
         session.resume()
     }
-    
-    
     
     static func handleResponse(data: Data?,
                                error: Error?,
@@ -62,6 +59,7 @@ final class APIManager {
                 do {
                     let results = try JSONDecoder().decode(YouTubeSearchResponse.self, from: data)
                     completion(.success(results.items[0]))
+                    print(results.items[0])
                 } catch {
                     completion(.failure(error))
                 }
@@ -70,5 +68,3 @@ final class APIManager {
         session.resume()
     }
 }
-
-

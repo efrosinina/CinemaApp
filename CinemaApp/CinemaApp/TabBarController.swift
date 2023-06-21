@@ -27,10 +27,7 @@ final class TabBarController: UITabBarController {
                                       image: UIImage(systemName: "magnifyingglass") ?? UIImage.add),
             setupNavigationController(rootViewController: FavoriteViewController(),
                                       title: "Favorite",
-                                      image: UIImage(systemName: "heart") ?? UIImage.add),
-            setupNavigationController(rootViewController: AccountViewController(),
-                                      title: "Account",
-                                      image: UIImage(systemName: "person.fill") ?? UIImage.add)
+                                      image: UIImage(systemName: "heart") ?? UIImage.add)
         ]
         setupTabBar()
     }
@@ -55,4 +52,3 @@ final class TabBarController: UITabBarController {
         view.tintColor = .black
     }
 }
-

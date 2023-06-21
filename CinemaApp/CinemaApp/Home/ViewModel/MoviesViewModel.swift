@@ -12,17 +12,22 @@ protocol MoviesViewModelProtocol {
     var numberOfCells: Int { get }
     var showError: ((String) -> Void)? { get set }
     var reloadCell: ((Int) -> Void)? { get set }
+    var selectedMovies: [MovieCellViewModel] { get set }
     
     func getMovie(for row: Int) -> MovieCellViewModel
 }
 
 final class MoviesViewModel: MoviesViewModelProtocol {
+    //MARK: -- Properties
+    var selectedMovies: [MovieCellViewModel] = [] {
+        didSet {
+            saveSelectedMovies()
+        }
+    }
     var reloadCell: ((Int) -> Void)?
-    
     var showError: ((String) -> Void)?
     var reloadData: (() -> Void)?
     
-    //MARK: -- Properties
     private var movies: [MovieCellViewModel] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -32,7 +37,6 @@ final class MoviesViewModel: MoviesViewModelProtocol {
     }
     
     private var video: VideoResponseModel?
-    
     var numberOfCells: Int {
         return movies.count
     }
@@ -44,11 +48,18 @@ final class MoviesViewModel: MoviesViewModelProtocol {
     
     //MARK: -- Methods
     func getMovie(for row: Int) -> MovieCellViewModel {
-       let movie = movies[row]
-       return movie
+        let movie = movies[row]
+        return movie
     }
     
     //MARK: -- Private Methods
+    private func saveSelectedMovies() {
+        guard let data = try? JSONEncoder().encode(selectedMovies) else {
+            return
+        }
+        UserDefaults.standard.setValue(data, forKey: "movies")
+    }
+    
     private func loadData() {
         APIManager.fetchMovies() { [weak self] result in
             guard let self = self else { return }
@@ -64,8 +75,7 @@ final class MoviesViewModel: MoviesViewModelProtocol {
     }
     
     private func convertToCellViewModel(_ movies: [Movie]) -> [MovieCellViewModel] {
-       return movies.map { MovieCellViewModel(movie: $0) }
-        
+        return movies.map { MovieCellViewModel(movie: $0) }
     }
     
     private func setupMockObjects() {
@@ -73,13 +83,11 @@ final class MoviesViewModel: MoviesViewModelProtocol {
             MovieCellViewModel(movie: Movie(adult: true, id: 18, poster_path: "", title: "First Movie",
                                             vote_average: 5,
                                             overview: "Hello, I am first description",
-                                            vote_count: 5, release_date: "2012", original_name: "", youtubeView: video)),
+                                            vote_count: 5, release_date: "2012", original_name: "")),
             MovieCellViewModel(movie: Movie(adult: true, id: 19, poster_path: "", title: "Second Movie",
-                  vote_average: 5,
-                  overview: "Hello, I am second description",
-                                            vote_count: 5, release_date: "2005", original_name: "", youtubeView: video))
+                                            vote_average: 5,
+                                            overview: "Hello, I am second description",
+                                            vote_count: 5, release_date: "2005", original_name: ""))
         ]
     }
 }
-
-

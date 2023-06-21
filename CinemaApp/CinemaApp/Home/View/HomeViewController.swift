@@ -8,7 +8,6 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    
     //MARK: -- GUI Variables
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -20,6 +19,7 @@ class HomeViewController: UIViewController {
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height), collectionViewLayout: layout)
         
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.backgroundColor = .white
         
         return collectionView
@@ -40,7 +40,6 @@ class HomeViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.setupViewModel()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -83,6 +82,10 @@ class HomeViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
+    
+    private func isSelected(movie: MovieCellViewModel) -> Bool {
+        viewModel.selectedMovies.contains(where: { $0.title == movie.title })
+    }
 }
 
 //MARK: -- UITableViewDataSource
@@ -99,9 +102,21 @@ extension HomeViewController: UICollectionViewDataSource {
         
         let movie = viewModel.getMovie(for: indexPath.row)
         guard let image = viewModel.getMovie(for: indexPath.row).poster_path else { return UICollectionViewCell() }
-        cell.setup(movie: movie, model: image)
+        cell.setup(movie: movie, model: image, selected: isSelected(movie: movie))
         return cell
     }
 }
 
-
+//MARK: -- UITableViewDelegate
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movie = viewModel.getMovie(for: indexPath.row)
+        
+        if isSelected(movie: movie) {
+            viewModel.selectedMovies.removeAll(where: { $0.title == movie.title})
+        } else {
+            viewModel.selectedMovies.append(movie)
+        }
+        collectionView.reloadItems(at: [indexPath])
+    }
+}

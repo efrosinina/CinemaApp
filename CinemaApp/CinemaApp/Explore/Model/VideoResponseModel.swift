@@ -8,10 +8,10 @@
 import Foundation
 
 struct VideoResponseModel: Codable {
-    let id: IdVideo
+    var id: IdVideo
 }
 
 struct IdVideo: Codable {
     let kind: String
-    let videoId: String
+    var videoId: String
 }

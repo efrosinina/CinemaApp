@@ -9,15 +9,8 @@ import UIKit
 
 class ExploreViewController: UIViewController {
     //MARK: -- GUI Variables
-    private lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.delegate = self
-        
-        return searchBar
-    }()
-    
     private lazy var tableView: UITableView = {
-        let view = UITableView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - searchBar.frame.height))
+        let view = UITableView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
         view.register(ExploreTableViewCell.self, forCellReuseIdentifier: "ExploreTableViewCell")
         view.dataSource = self
         view.delegate = self
@@ -40,7 +33,6 @@ class ExploreViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.setupViewModel()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -49,19 +41,15 @@ class ExploreViewController: UIViewController {
     
     //MARK: -- Private Methods
     private func setupUI() {
-        view.addSubviews([searchBar, tableView])
+        view.addSubviews([tableView])
         view.backgroundColor = .white
         
         setupConstraints()
     }
     
     private func setupConstraints() {
-        searchBar.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-        }
-        
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom)
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(5)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
@@ -78,7 +66,6 @@ class ExploreViewController: UIViewController {
         }
         
         viewModel.showError = { error in
-            //TODO: show alert
             print(error)
         }
     }
@@ -101,20 +88,14 @@ extension ExploreViewController: UITableViewDataSource {
     }
 }
 
+//MARK: -- UITableViewDelegate
 extension ExploreViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         let movie = viewModel.getMovie(for: indexPath.row)
-            //guard let titleName = movie.title else { return }
+        let movie = viewModel.getMovie(for: indexPath.row)
         navigationController?.pushViewController(FilmViewController(viewModel: FilmViewModel(movie: movie)), animated: true)
     }
-}
-
-extension ExploreViewController: UISearchBarDelegate {
-    //func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    //guard let text = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
-    //        viewModel
 }

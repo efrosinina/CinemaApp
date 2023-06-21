@@ -17,6 +17,7 @@ protocol FilmViewModelProtocol {
     var original_name: String? { get }
     var youtubeView: VideoResponseModel? { get set }
     
+    func loadData(wkView: WKWebView)
 }
 
 final class FilmViewModel: FilmViewModelProtocol {
@@ -28,6 +29,21 @@ final class FilmViewModel: FilmViewModelProtocol {
     let release_date: String?
     let original_name: String?
     
+    func loadData(wkView: WKWebView) {
+        APIManager.getYoutubeTrailer(with: (title ?? "") + " trailer") { result in
+            switch result {
+            case .success(let video):
+                self.youtubeView = video
+                guard let youtubeUrl = URL(string: "https://www.youtube.com/embed/\(video.id.videoId)") else { return }
+                DispatchQueue.main.async {
+                    wkView.load(URLRequest(url: youtubeUrl))
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     init(movie: MovieCellViewModel) {
         title = movie.title
         poster_path = movie.poster_path
@@ -35,6 +51,5 @@ final class FilmViewModel: FilmViewModelProtocol {
         vote_average = movie.vote_average ?? 9.0
         release_date = movie.release_date
         original_name = movie.original_name
-        youtubeView = movie.youtubeView
     }
 }

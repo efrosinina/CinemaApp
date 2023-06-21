@@ -12,20 +12,31 @@ import WebKit
 
 class FilmViewController: UIViewController {
     //MARK: -- GUI Variables
-    private lazy var scrollView: UIScrollView = {
-        let view = UIScrollView()
+    private lazy var webView: WKWebView = {
+        let view = WKWebView()
+        view.backgroundColor = .blue
         
         return view
     }()
     
-    private lazy var contentView: UIView = UIView()
+    private lazy var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+    
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.isUserInteractionEnabled = true
+        return view
+    }()
     
     private lazy var stackView: UIStackView = {
         let view = UIStackView()
-        view.axis = .horizontal // Вертикальный стэк
-        view.distribution = .fillEqually // Выравнивание элементов в стэке
-        view.alignment = .center // вертикальное выравнивание контента в стэке
-        view.spacing = 5 // Расстояние между объектами в стэке
+        view.axis = .horizontal
+        view.distribution = .fillEqually
+        view.alignment = .center
+        view.spacing = 5
         
         return view
     }()
@@ -75,33 +86,18 @@ class FilmViewController: UIViewController {
         return label
     }()
     
-    private lazy var playButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Play", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemRed
-        button.layer.cornerRadius = 5
-        return button
-    }()
-    
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "jsdfdjfhdjfjdkfjdkfjdrfgfgtfghfgfgfgfgfgfgfgfgfgfgfgfgrtirtrutriuhjdfnvvbghderwhuijqkolap;Z.X,CVBNM,LIUYTR"
         label.textColor = .black
         label.font = .systemFont(ofSize: 15)
         label.numberOfLines = .max
+        
         return label
     }()
     
-    private lazy var webView: WKWebView = {
-        let view = WKWebView()
-        view.backgroundColor = .blue
-        return view
-    }()
-    
     //MARK: -- Properties
-    private let edgesInset = 30
-    private let viewModel: FilmViewModelProtocol
+    private var viewModel: FilmViewModelProtocol
     
     //MARK: -- Initialization
     init(viewModel: FilmViewModelProtocol) {
@@ -122,36 +118,39 @@ class FilmViewController: UIViewController {
     
     //MARK: -- Private Methods
     private func setupUI() {
+        let views = [titleLabel, imageView, starImageView, voteLabel, releaseDateLabel, descriptionLabel, webView]
+        views.forEach { view in
+            view.isUserInteractionEnabled = true
+        }
         view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews([titleLabel, imageView, starImageView, voteLabel, releaseDateLabel, playButton, descriptionLabel, webView])
+        contentView.addSubviews(views)
         
         configureView()
         setupConstraints()
     }
     
-    private func configureView() {
+    func configureView() {
         titleLabel.text = viewModel.title ?? viewModel.original_name
         
         descriptionLabel.text = viewModel.overview
         releaseDateLabel.text = viewModel.release_date
         voteLabel.text = "\(String(format: "%.1f", viewModel.vote_average)) / 10 IMDb"
         
-       let url = URL(string: "https://image.tmdb.org/t/p/w500/\(viewModel.poster_path ?? "")")
+        let url = URL(string: "https://image.tmdb.org/t/p/w500/\(viewModel.poster_path ?? "")")
         imageView.sd_setImage(with: url)
         
-        guard let youtubeUrl = URL(string: "https://www.youtube.com/embed/\(viewModel.youtubeView?.id.videoId ?? "")") else { return }
-        webView.load(URLRequest(url: youtubeUrl))
+        viewModel.loadData(wkView: webView)
     }
-  
+    
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints { make in
-            make.width.edges.equalToSuperview()
+            make.size.edges.equalToSuperview()
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -180,20 +179,14 @@ class FilmViewController: UIViewController {
             make.leading.equalTo(starImageView.snp.trailing).offset(2)
         }
         
-        playButton.snp.makeConstraints { make in
-            make.top.equalTo(voteLabel.snp.bottom).offset(20)
-            make.trailing.leading.equalToSuperview().inset(10)
-        }
-        
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(playButton.snp.bottom).offset(15)
+            make.top.equalTo(voteLabel.snp.bottom).offset(15)
             make.trailing.leading.equalToSuperview().inset(10)
         }
         
         webView.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(10)
             make.trailing.leading.bottom.equalToSuperview()
-            make.height.equalTo(100)
         }
     }
 }
