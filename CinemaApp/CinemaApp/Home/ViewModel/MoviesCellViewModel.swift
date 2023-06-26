@@ -21,13 +21,13 @@ struct MovieCellViewModel: Codable {
     //MARK: -- Initialization
     init(movie: Movie) {
         overview = movie.overview
-        vote_average = movie.vote_average
+        vote_average = movie.voteAverage
         title = movie.title
-        poster_path = movie.poster_path
-        vote_count = movie.vote_count
-        release_date = movie.release_date
+        poster_path = movie.posterPath
+        vote_count = movie.voteCount
+        release_date = movie.releaseDate
         id = movie.id
-        original_name = movie.original_name
+        original_name = movie.originalName
         if let formatDate = formatDate(dateString: release_date ?? "") {
             self.release_date = formatDate
         }

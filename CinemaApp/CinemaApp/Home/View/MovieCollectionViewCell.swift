@@ -27,7 +27,6 @@ class MovieCollectionViewCell: UICollectionViewCell {
     private lazy var imageView: GradientImageView = {
         let image = GradientImageView(frame: CGRect(x: 0, y: 0, width: 125, height: 200))
         image.contentMode = .scaleAspectFill
-        image.image = UIImage(named: "movieImage")
         image.layer.masksToBounds = true
         
         return image
@@ -46,7 +45,6 @@ class MovieCollectionViewCell: UICollectionViewCell {
         label.numberOfLines = 0
         label.textColor = .systemGray6.withAlphaComponent(1)
         label.font = .boldSystemFont(ofSize: 16)
-        label.text = "Venom 2 film watching"
         
         return label
     }()
@@ -64,22 +62,15 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     //MARK: -- Methods
     func setup(movie: MovieCellViewModel, model: String, selected: Bool) {
-        if movie.title != nil {
-            titleLabel.text = movie.title ?? movie.original_name
-        } else {
-            titleLabel.text = "No name"
-        }
+        titleLabel.text = movie.title ?? movie.original_name
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else { return }
-        
         imageView.sd_setImage(with: url)
-        
         favoriteImageView.image = selected ? State.select.image : State.unselect.image
     }
     
     //MARK: -- Private Methods
     private func setupUI() {
         addSubviews([imageView, titleLabel, favoriteImageView])
-        
         setupConstraints()
     }
     private func setupConstraints() {

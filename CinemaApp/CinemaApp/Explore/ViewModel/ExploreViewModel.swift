@@ -67,14 +67,14 @@ final class ExploreViewModel: ExploreViewModelProtocol {
     
     private func setupMockObjects() {
         movies = [
-            MovieCellViewModel(movie: Movie(adult: true, id: 18, poster_path: "", title: "First Movie",
-                                            vote_average: 5,
+            MovieCellViewModel(movie: Movie(adult: true, id: 18, posterPath: "", title: "First Movie",
+                                            voteAverage: 5,
                                             overview: "Hello, I am first description",
-                                            vote_count: 5, release_date: "2012", original_name: "")),
-            MovieCellViewModel(movie: Movie(adult: true, id: 19, poster_path: "", title: "Second Movie",
-                                            vote_average: 5,
+                                            voteCount: 5, releaseDate: "2012", originalName: "")),
+            MovieCellViewModel(movie: Movie(adult: true, id: 19, posterPath: "", title: "Second Movie",
+                                            voteAverage: 5,
                                             overview: "Hello, I am second description",
-                                            vote_count: 5, release_date: "2005", original_name: ""))
+                                            voteCount: 5, releaseDate: "2005", originalName: ""))
         ]
     }
 }

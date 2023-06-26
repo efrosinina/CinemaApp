@@ -14,14 +14,12 @@ class FavoriteViewController: UITableViewController {
     //MARK: -- Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationController?.navigationBar .prefersLargeTitles = true
         setupTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         fetchFavorite()
     }
     

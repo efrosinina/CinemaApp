@@ -12,7 +12,6 @@ class FavoriteTableViewCell: UITableViewCell {
     //MARK: -- GUI Variables
     private lazy var releaseDate: UILabel = {
         let label = UILabel()
-        label.text = "2023"
         label.font = .systemFont(ofSize: 20)
         label.textColor = .black
         
@@ -21,7 +20,6 @@ class FavoriteTableViewCell: UITableViewCell {
     
     private lazy var filmLabel: UILabel = {
         let label = UILabel()
-        label.text = "Venom 2"
         label.font = .systemFont(ofSize: 20)
         label.textColor = .black
         
@@ -41,18 +39,13 @@ class FavoriteTableViewCell: UITableViewCell {
     
     //MARK: -- Methods
     func setupCell(movie: MovieCellViewModel) {
-        if movie.title != nil {
-            filmLabel.text = movie.title ?? movie.original_name
-        } else {
-            filmLabel.text = "No name"
-        }
+        filmLabel.text = movie.title ?? movie.original_name
         releaseDate.text = movie.release_date
     }
     
     //MARK: -- Private Methods
     private func setupUI() {
         addSubviews([releaseDate, filmLabel])
-        
         setupConstraints()
     }
     

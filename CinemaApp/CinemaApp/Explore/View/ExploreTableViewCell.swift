@@ -12,7 +12,6 @@ class ExploreTableViewCell: UITableViewCell {
     //MARK: -- GUI Variables
     private lazy var filmImage: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "person")
         view.contentMode = .scaleAspectFill
         
         return view
@@ -20,7 +19,6 @@ class ExploreTableViewCell: UITableViewCell {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Title Label"
         label.font = .boldSystemFont(ofSize: 15)
         label.textColor = .black
         
@@ -36,7 +34,6 @@ class ExploreTableViewCell: UITableViewCell {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Description label"
         label.font = .systemFont(ofSize: 13)
         label.textColor = .black
         label.numberOfLines = .max
@@ -57,14 +54,9 @@ class ExploreTableViewCell: UITableViewCell {
     
     //MARK: -- Methods
     func setup(movie: MovieCellViewModel, model: String) {
-        if movie.title != nil {
-            titleLabel.text = movie.title ?? movie.original_name
-        } else {
-            titleLabel.text = "No name"
-        }
+        titleLabel.text = movie.title ?? movie.original_name
         descriptionLabel.text = movie.overview
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else { return }
-        
         filmImage.sd_setImage(with: url)
     }
     

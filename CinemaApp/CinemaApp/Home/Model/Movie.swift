@@ -10,12 +10,23 @@ import Foundation
 struct Movie: Codable {
     let adult: Bool?
     let id: Int?
-    let poster_path: String?
+    let posterPath: String?
     let title: String?
-    let vote_average: Double?
+    let voteAverage: Double?
     let overview: String?
-    let vote_count: Int
-    let release_date: String?
-    let original_name: String?
+    let voteCount: Int
+    let releaseDate: String?
+    let originalName: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case adult
+        case id
+        case posterPath = "poster_path"
+        case title
+        case voteAverage = "vote_average"
+        case overview
+        case voteCount = "vote_count"
+        case releaseDate = "release_date"
+        case originalName = "original_name"
+    }
 }
-

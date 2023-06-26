@@ -14,7 +14,6 @@ class FilmViewController: UIViewController {
     //MARK: -- GUI Variables
     private lazy var webView: WKWebView = {
         let view = WKWebView()
-        view.backgroundColor = .blue
         
         return view
     }()
@@ -22,12 +21,14 @@ class FilmViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.isUserInteractionEnabled = true
+        
         return view
     }()
     
     private lazy var contentView: UIView = {
         let view = UIView()
         view.isUserInteractionEnabled = true
+        
         return view
     }()
     
@@ -46,6 +47,7 @@ class FilmViewController: UIViewController {
         view.contentMode = .center
         view.image = UIImage(systemName: "star.fill")
         view.tintColor = .yellow
+        
         return view
     }()
     
@@ -62,15 +64,14 @@ class FilmViewController: UIViewController {
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "ZiClJf-1920w")
         view.layer.masksToBounds = true
         view.layer.cornerRadius = 15
+        
         return view
     }()
     
     private lazy var releaseDateLabel: UILabel = {
         let label = UILabel()
-        label.text = "2019"
         label.textColor = .black
         label.font = .boldSystemFont(ofSize: 15)
         
@@ -79,7 +80,6 @@ class FilmViewController: UIViewController {
     
     private lazy var voteLabel: UILabel = {
         let label = UILabel()
-        label.text = "8.5"
         label.textColor = .black
         label.font = .systemFont(ofSize: 17)
         
@@ -88,7 +88,6 @@ class FilmViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "jsdfdjfhdjfjdkfjdkfjdrfgfgtfghfgfgfgfgfgfgfgfgfgfgfgfgrtirtrutriuhjdfnvvbghderwhuijqkolap;Z.X,CVBNM,LIUYTR"
         label.textColor = .black
         label.font = .systemFont(ofSize: 15)
         label.numberOfLines = .max
@@ -133,11 +132,9 @@ class FilmViewController: UIViewController {
     
     func configureView() {
         titleLabel.text = viewModel.title ?? viewModel.original_name
-        
         descriptionLabel.text = viewModel.overview
         releaseDateLabel.text = viewModel.release_date
         voteLabel.text = "\(String(format: "%.1f", viewModel.vote_average)) / 10 IMDb"
-        
         let url = URL(string: "https://image.tmdb.org/t/p/w500/\(viewModel.poster_path ?? "")")
         imageView.sd_setImage(with: url)
         

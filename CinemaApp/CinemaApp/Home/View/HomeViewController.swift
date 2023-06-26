@@ -17,7 +17,6 @@ class HomeViewController: UIViewController {
         layout.minimumInteritemSpacing = 2
         
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height), collectionViewLayout: layout)
-        
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
