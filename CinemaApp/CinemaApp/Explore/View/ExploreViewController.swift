@@ -81,7 +81,7 @@ extension ExploreViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExploreTableViewCell", for: indexPath) as? ExploreTableViewCell else { return UITableViewCell() }
         
         let movie = viewModel.getMovie(for: indexPath.row)
-        guard let image = viewModel.getMovie(for: indexPath.row).poster_path else { return UITableViewCell() }
+        guard let image = viewModel.getMovie(for: indexPath.row).posterPath else { return UITableViewCell() }
         
         cell.setup(movie: movie, model: image)
         return cell

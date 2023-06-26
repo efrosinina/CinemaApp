@@ -39,8 +39,8 @@ class FavoriteTableViewCell: UITableViewCell {
     
     //MARK: -- Methods
     func setupCell(movie: MovieCellViewModel) {
-        filmLabel.text = movie.title ?? movie.original_name
-        releaseDate.text = movie.release_date
+        filmLabel.text = movie.title ?? movie.originalName
+        releaseDate.text = movie.releaseDate
     }
     
     //MARK: -- Private Methods

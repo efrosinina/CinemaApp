@@ -11,25 +11,36 @@ struct MovieCellViewModel: Codable {
     //MARK: -- Properties
     let id: Int?
     let title: String?
-    let original_name: String?
-    let poster_path: String?
+    let originalName: String?
+    let posterPath: String?
     let overview: String?
-    let vote_average: Double?
-    let vote_count: Int
-    var release_date: String?
+    let voteAverage: Double?
+    let voteCount: Int
+    var releaseDate: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case originalName = "original_name"
+        case posterPath = "poster_path"
+        case overview
+        case voteAverage = "vote_average"
+        case voteCount = "vote_count"
+        case releaseDate = "release_date"
+    }
     
     //MARK: -- Initialization
     init(movie: Movie) {
         overview = movie.overview
-        vote_average = movie.voteAverage
+        voteAverage = movie.voteAverage
         title = movie.title
-        poster_path = movie.posterPath
-        vote_count = movie.voteCount
-        release_date = movie.releaseDate
+        posterPath = movie.posterPath
+        voteCount = movie.voteCount
+        releaseDate = movie.releaseDate
         id = movie.id
-        original_name = movie.originalName
-        if let formatDate = formatDate(dateString: release_date ?? "") {
-            self.release_date = formatDate
+        originalName = movie.originalName
+        if let formatDate = formatDate(dateString: releaseDate ?? "") {
+            self.releaseDate = formatDate
         }
     }
     

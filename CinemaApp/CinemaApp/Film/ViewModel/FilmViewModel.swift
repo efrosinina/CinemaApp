@@ -46,10 +46,10 @@ final class FilmViewModel: FilmViewModelProtocol {
     
     init(movie: MovieCellViewModel) {
         title = movie.title
-        poster_path = movie.poster_path
+        poster_path = movie.posterPath
         overview = movie.overview
-        vote_average = movie.vote_average ?? 9.0
-        release_date = movie.release_date
-        original_name = movie.original_name
+        vote_average = movie.voteAverage ?? 9.0
+        release_date = movie.releaseDate
+        original_name = movie.originalName
     }
 }

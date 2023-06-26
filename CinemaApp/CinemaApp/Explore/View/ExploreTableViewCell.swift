@@ -54,7 +54,7 @@ class ExploreTableViewCell: UITableViewCell {
     
     //MARK: -- Methods
     func setup(movie: MovieCellViewModel, model: String) {
-        titleLabel.text = movie.title ?? movie.original_name
+        titleLabel.text = movie.title ?? movie.originalName
         descriptionLabel.text = movie.overview
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else { return }
         filmImage.sd_setImage(with: url)

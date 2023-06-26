@@ -62,6 +62,7 @@ class FavoriteViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             self.favoriteFilm.remove(at: indexPath.row)
+            //print(favoriteFilm)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }

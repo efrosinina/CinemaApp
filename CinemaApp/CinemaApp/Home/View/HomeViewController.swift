@@ -99,7 +99,7 @@ extension HomeViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionViewCell", for: indexPath) as? MovieCollectionViewCell else { return UICollectionViewCell() }
         
         let movie = viewModel.getMovie(for: indexPath.row)
-        guard let image = viewModel.getMovie(for: indexPath.row).poster_path else { return UICollectionViewCell() }
+        guard let image = viewModel.getMovie(for: indexPath.row).posterPath else { return UICollectionViewCell() }
         cell.setup(movie: movie, model: image, selected: isSelected(movie: movie))
         return cell
     }

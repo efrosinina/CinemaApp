@@ -62,7 +62,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     //MARK: -- Methods
     func setup(movie: MovieCellViewModel, model: String, selected: Bool) {
-        titleLabel.text = movie.title ?? movie.original_name
+        titleLabel.text = movie.title ?? movie.originalName
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else { return }
         imageView.sd_setImage(with: url)
         favoriteImageView.image = selected ? State.select.image : State.unselect.image
